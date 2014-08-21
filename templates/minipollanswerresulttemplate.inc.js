@@ -1,5 +1,5 @@
 // JavaScript Document
-minipollanswerresult_html_template = '<div class="minipollanswerresultcontainer" data-mipoanswerid="{{{mipoanswerid}}}">\n';
+minipollanswerresult_html_template = '<div class="minipollanswerresultcontainer {{{votedthisclass}}}" data-mipoanswerid="ans{{{mipoanswerid}}}_ques{{{mipoquestionid}}}_mipo{{{mipoid}}}" {{{votedthispart}}}>\n';
 minipollanswerresult_html_template +='{{{ans_text}}}\n<br />';
 minipollanswerresult_html_template +='  <div class="percentholder">\n';
 minipollanswerresult_html_template +='  <span class="percentouter">\n';

@@ -85,16 +85,21 @@ if(file_exists('css/'. $minipollidasked . '/minipoll.css')){//css/1/mini
 		//returnhtml += minipollanswer_html_template.replaceObject(answerreplacerobject);//minipollanswer_html_template is from templates/minipollanswertemplate.inc.js
 		return returnhtml;
 	}
-	function getresultshtml(loadedjson) {
-		answerresultshtml = "";
+	function getresultshtml(loadedjson,votedvalue) {
 		
+		answerresultshtml = "";
+		//console.log(loadedjson.minipolldata[0]);
 		$.each(loadedjson.minipolldata[0].answers, function( index, value ) {
 			console.log( index);console.log( value );
+			if(votedvalue == "ans"+value['id']+"_ques"+value['ques_id']+"_mipo" +value['minipoll_id']){votedthispart = " data-votedthis=\"votedthis\" ";votedthisclass=" votedthis "}else{votedthisclass="";votedthispart = " ";}
 			answerresultreplacerobject={"{{{mipoanswerid}}}":value['id'],
 			                      "{{{ans_text}}}":value['ans_text']+"",
 								  "{{{mipoquestionid}}}":value['ques_id'],
 								  "{{{mipoid}}}":value['minipoll_id'],
-								  "{{{partvoted}}}":(100*value['answervotedpart']).toFixed(0)
+								  "{{{partvoted}}}":(100*value['answervotedpart']).toFixed(0),
+								  "{{{votedthispart}}}":votedthispart,
+								  "{{{votedthisclass}}}":votedthisclass
+								  
 								  
 								  };
 			answerresultshtml += minipollanswerresult_html_template.replaceObject(answerresultreplacerobject);//minipollanswer_html_template is from templates/minipollanswertemplate.inc.j
@@ -184,8 +189,14 @@ if(file_exists('css/'. $minipollidasked . '/minipoll.css')){//css/1/mini
 					
 					
 				}else{
+					
 					console.log('already voted: show results');
-					resultshtml=getresultshtml(loadedjson);
+				    alert($.cookie('mipo_set_data'));
+					
+					if(typeof($.cookie('mipo_set_data'))!== 'undefined'){
+						votedfor = $.cookie('mipo_set_data');
+					}else{votedfor ='error';}
+					resultshtml=getresultshtml(loadedjson,votedfor);
 					$('div#content').html(resultshtml);
 				}
 			}
