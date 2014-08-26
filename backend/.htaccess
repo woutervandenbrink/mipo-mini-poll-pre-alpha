@@ -1,0 +1,7 @@
+Options +FollowSymlinks
+
+AuthName "Restricted Area" 
+AuthType Basic 
+AuthUserFile "C:\wamp\www\minipollsite\mipo-mini-poll\pww\.htpasswd"
+AuthGroupFile /dev/null 
+require valid-user
