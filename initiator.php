@@ -60,8 +60,11 @@ if(file_exists('css/'. $minipollidasked . '/minipoll.css')){//css/1/mini
 	echo "alert(\"bestaat niet\");\n";;
 }
 ?>
-    function getradioshtml(loadedjson) {
+    function getradioshtml(loadedjson,disabled) {
 		//console.log(loadedjson);
+		if(disabled=='disabled'){
+		  disabledattr=" disabled=\"disabled\""	;
+		}else{disabledattr="";}
 		console.log(loadedjson.minipolldata[0].answers[1]);
 		answershtml = "";
 		$.each(loadedjson.minipolldata[0].answers, function( index, value ) {
@@ -69,7 +72,8 @@ if(file_exists('css/'. $minipollidasked . '/minipoll.css')){//css/1/mini
 			answerreplacerobject={"{{{mipoanswerid}}}":value['id'],
 			                      "{{{ans_text}}}":value['ans_text']+"",
 								  "{{{mipoquestionid}}}":value['ques_id'],
-								  "{{{mipoid}}}":value['minipoll_id']
+								  "{{{mipoid}}}":value['minipoll_id'],
+								  "{{{disabledattr}}}":disabledattr
 								  
 								  };
 			answershtml += minipollanswer_html_template.replaceObject(answerreplacerobject);//minipollanswer_html_template is from templates/minipollanswertemplate.inc.j
@@ -170,8 +174,16 @@ if(file_exists('css/'. $minipollidasked . '/minipoll.css')){//css/1/mini
 			if(loadedjson.minipolldata[0].pollactivated=="no"){
 				//deactivate poll : give text/ show dactivated form radio buttons;
 				console.log("poll not active yet: show deactivated radios");
+				radiohtml = getradioshtml(loadedjson,'disabled');
+				$('div#content').html(radiohtml);
 			}else if(loadedjson.minipolldata[0].pollexpired=="yes"){
-				console.log('poll expired: show results');;
+				console.log('poll expired: show results');
+				if(typeof($.cookie('mipo_set_data'))!== 'undefined'){
+					votedfor = $.cookie('mipo_set_data');
+				}else{votedfor ='error';}
+				 console.log($.cookie('mipo_set_data'));
+				 resultshtml=getresultshtml(loadedjson,"error");
+				$('div#content').html(resultshtml);
 			}else{
 				console.log('check if already voted');
 				if(typeof $.cookie('mipo_set_status') === 'undefined'){//not voted
