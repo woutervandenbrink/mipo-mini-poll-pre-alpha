@@ -86,7 +86,7 @@ $( document ).ready(function() {
 			$( this ).css("color", "red");//debug action
 		  console.log( index + ": " +$(this).attr('name') + " : " + $(this).val() );
 		  //set the data object element
-		  minipollcreatedata[newminipollidincrementer][$(this).attr('name')]="-";
+		  minipollcreatedata[newminipollidincrementer][$(this).attr('name')]={"waarde":"-","check":"wrong"};
 		  
 		});
 		console.log(minipollcreatedata);
@@ -104,19 +104,51 @@ $( document ).ready(function() {
 			if(checkinputfield($(this))){//let if be a test on contents
 				$(this).css("color", "green");
 				$(this).attr('data-checkstatus','ok');//update data object?
+				minipollcreatedata[$(this).attr('data-tempid')][$(this).attr('name')]['check']="ok";
 			}else{
 				$(this).css("color", "red");
 				$(this).attr('data-checkstatus','wrong');//update data object?
+				minipollcreatedata[$(this).attr('data-tempid')][$(this).attr('name')]['check']="wrong";
 			}
 			
-			minipollcreatedata[$(this).attr('data-tempid')][$(this).attr('name')]=$(this).val();
+			minipollcreatedata[$(this).attr('data-tempid')][$(this).attr('name')]['waarde']=$(this).val();
 			console.log($(this).parent('span').next('span').attr('data-following'));
 			if($(this).parent('span').next('span').is(":visible")==false){
 				$(this).parent('span').next('span').fadeIn();
 			}
 			//console.log($(this).parent('span').next('span').length);// === 'undefined')
 			//console.log($(this).parent('span').next('span').is(":visible"));
-			console.log(minipollcreatedata);
+			console.log('r119a');console.log(minipollcreatedata);console.log('r119b');
+			var deze=$(this);
+			var checkarray =new Array();
+			var teller=0;
+			console.log(checkarray);
+			$.each( minipollcreatedata[$(this).attr('data-tempid')], function( key, value ) {
+			teller+=1;
+			console.log('teller '+teller);
+				console.log(key);
+				console.log(value);
+				console.log(value.check);
+				if(typeof value.check !== 'undefined'){
+					checkarray.push(value.check);;
+				}
+				
+			});
+			console.log(checkarray);
+			if ($.inArray("wrong",checkarray) ==-1){
+				alert('alles ok!!');
+				//http://stackoverflow.com/questions/16285791/how-do-you-replace-an-html-tag-with-another-tag-in-jquery
+				//$('aside').contents().unwrap().wrap('<div/>');
+				
+				$( "input.minipollinput" ).each(function( index ) {
+					console.log( index + ": " + $( this ).text() );
+					//console.log($(this).attr('title'));
+					$(this).attr('style','background:#999');
+					$(this).attr('disabled','disabled');
+					
+				});
+			}
+			
 		});
 		console.log(minipollcreatedata);
 		
