@@ -99,7 +99,6 @@ if(file_exists('css/'. $minipollidasked . '/minipoll.css')){//css/1/mini
 		//now create the containing html and insert answers therein
 		minipollreplacerobject={"{{{minipollid}}}":""+ loadedjson.minipolldata[0].id + "",
 		                        "{{{mipoheadtext}}}": loadedjson.minipolldata[0].minipoll_headtext,
-								"{{{mipoquestion}}}":loadedjson.minipolldata[0].ques_name,
 								"{{{answershtml}}}": answershtml
 								};
 		returnhtml = minipoll_html_template.replaceObject(minipollreplacerobject);//minipollanswer_html_template is from templates/minipollanswertemplate.inc.js
@@ -139,7 +138,6 @@ if(file_exists('css/'. $minipollidasked . '/minipoll.css')){//css/1/mini
 		});
 		minipollresultsreplacerobject={"{{{minipollid}}}":""+ loadedjson.minipolldata[0].id + "",
 		                        "{{{mipoheadtext}}}": loadedjson.minipolldata[0].minipoll_headtext,
-								"{{{mipoquestion}}}": loadedjson.minipolldata[0].ques_name,
 								"{{{answersresultshtml}}}": answerresultshtml
 								};
 		returnhtml = minipollresults_html_template.replaceObject(minipollresultsreplacerobject);//minipollanswer_html_template is from templates/minipollanswertemplate.inc.js
@@ -188,7 +186,6 @@ if(file_exists('css/'. $minipollidasked . '/minipoll.css')){//css/1/mini
 			dataType: "json",
 			//data: { "minipollformid": minipolldataobject[0].id,"dataradioid": dataradioid, "questionvalue": questionvalue, "minipollcookiecontent":minipollcookiecontent }
 			data: {"answertext": dezehier.parent().text(), "answervalue": dezehier.val() }
-			//data: {"answertext": "adf", "answervalue": "adfasdf" }
 		}).done(function( msg ) {
 			
 			//var minipolldataobject;

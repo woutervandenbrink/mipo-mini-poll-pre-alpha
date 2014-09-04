@@ -25,8 +25,10 @@
 
  // A $( document ).ready() block.
 $( document ).ready(function() {
-	minipollcreatedata={};
-	newminipollidincrementer=0;
+	 minipollcreatedata={};//dataobject for data concerning making poll
+
+	 newminipollidincrementer=0;
+	
 	 function checkinputfield(inputfield){
 		 console.log(inputfield.val());console.log(inputfield.attr('name'));console.log(inputfield.attr('data-tempid'));console.log('checkinputfield');
 		 if(inputfield.attr('name')=='minipollname'){
@@ -63,8 +65,9 @@ $( document ).ready(function() {
 		 return returnhtml;
 	 };
 	 function get_step1input_html(tempmipoid){
-		 minipollcreatedata[tempmipoid]={"tempmipoid":tempmipoid};
-		 createminipollstep1replacerobject={"{{{newmipoid}}}":tempmipoid
+		 minipollcreatedata[tempmipoid]={"tempmipoid":tempmipoid,"step1completed":"no"};
+		 createminipollstep1replacerobject={"{{{newmipoid}}}":tempmipoid,
+		                                     "{{{step1completed}}}":"no"
 
 								  };
 		 returnhtml = minipollcreateminipollstep1input_html_template.replaceObject(createminipollstep1replacerobject);//from ../templates/minipollcreateminipolltemplate.inc.js
@@ -139,12 +142,18 @@ $( document ).ready(function() {
 				alert('alles ok!!');
 				//http://stackoverflow.com/questions/16285791/how-do-you-replace-an-html-tag-with-another-tag-in-jquery
 				//$('aside').contents().unwrap().wrap('<div/>');
+				console.log($(this).parents('.minipollcreatewizstep1input').attr('class'))
+				$(this).parents('.minipollcreatewizstep1input').append('<div class="create_answers_button">Create answers for this poll\'s question</div><div class="reedit_pollstep1">re-edit poll step 1</div>');
 				
+				$(this).parents('.minipollcreatewizstep1input').attr('data-completedstep1', 'yes');
+				minipollcreatedata[$(this).attr('data-tempid')]['step1completed']="yes";
+				console.log(minipollcreatedata);
 				$( "input.minipollinput" ).each(function( index ) {
 					console.log( index + ": " + $( this ).text() );
 					//console.log($(this).attr('title'));
 					$(this).attr('style','background:#999');
 					$(this).attr('disabled','disabled');
+					//create edit again button
 					
 				});
 			}

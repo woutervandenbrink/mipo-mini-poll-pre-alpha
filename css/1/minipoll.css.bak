@@ -5,7 +5,7 @@
  background-color:#e7e7e7	;
  width:200px;
  position:relative;
- padding-bottom:30px;}
+}
 .minipollhead {
 	font-size:15px;
 	/* font-family:Verdana, Geneva, sans-serif; */
@@ -26,7 +26,7 @@
 }
 .percentholder {
 	position:relative;
-	width:195px;
+	width:200px;
 	height:20px;
 	
 }
@@ -87,10 +87,4 @@
 
 .mipoanswerinput.disab {
 	cursor:not-allowed ;
-}
-
-.answertext {
-	display: inline-block;
-    width: 150px;
-	vertical-align:text-top;
 }
