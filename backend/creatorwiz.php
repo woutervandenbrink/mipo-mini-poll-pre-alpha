@@ -16,7 +16,25 @@
   <script src="../templates/minipollcreateminipollstep1inputtemplate.inc.js"></script>
   <script src="../templates/minipollanswertemplate.inc.js"></script>
   <script src="../templates/minipollanswerresulttemplate.inc.js"></script>
+  <script src="../templates/minipollcreateminipollanswerinputtemplate.inc.js" type="text/javascript"></script>
   
+  
+  
+  <script>
+      String.prototype.replaceObject = function(findreplaceobject) {
+		 var replaceString = this;
+		 //alert('eerste: ' + replaceString);
+		keysarray=Object.getOwnPropertyNames(findreplaceobject);
+		keysarray.map(function(item){
+			 regex = new RegExp(item, "g");
+			//alert(regex);
+			 replaceString = replaceString.replace(regex, findreplaceobject[item]);
+			 //alert(replaceString);
+		});
+		//alert(keysarray);
+		return replaceString;
+	};
+  </script>
 </head>
 
 <body>
@@ -84,6 +102,8 @@ $( document ).ready(function() {
 		 return returnhtml;
 	 };
          
+         
+         
          /**
           * 
           * @
@@ -99,6 +119,19 @@ $( document ).ready(function() {
 		 returnhtml = minipollcreateminipollstep1input_html_template.replaceObject(createminipollstep1replacerobject);//from ../templates/minipollcreateminipolltemplate.inc.js
 		 return returnhtml;
 	 };
+         
+         function get_answer_html(){
+             answerreplacerobject={
+                                   "{{{ans_text}}}":"helaebola",
+                                   "{{{mipoanswerid}}}":"1",
+                                   "{{{disabledattr}}}":"",
+                                   "{{{mipoquestionid}}}":"1",
+                                   "{{{mipoid}}}":"1",
+                                  };
+            answer_html= minipollcreateminipollanswerinput_html_template.replaceObject(answerreplacerobject);
+             return answer_html;
+         }
+         $('body').append(get_answer_html());
          /* fill div with input-tags content */
 	 $('#wizcontent').html(get_start_html());
 	 
@@ -229,19 +262,7 @@ $( document ).ready(function() {
     * @param {object} findreplaceobject
     * @returns {String}
     */
-   String.prototype.replaceObject = function(findreplaceobject) {
-		 var replaceString = this;
-		 //alert('eerste: ' + replaceString);
-		keysarray=Object.getOwnPropertyNames(findreplaceobject);
-		keysarray.map(function(item){
-			 regex = new RegExp(item, "g");
-			//alert(regex);
-			 replaceString = replaceString.replace(regex, findreplaceobject[item]);
-			 //alert(replaceString);
-		});
-		//alert(keysarray);
-		return replaceString;
-	};
+   
 	
 
     
