@@ -22,6 +22,11 @@
 <body>
 <div id="wizcontent">create mipo minipoll</div>
  <!--  --><script>
+     /**
+     * @fileOverview Backend for mipo-mini-poll.
+     * @author Wouter J. van den Brink
+     * @version 0.0.1
+     */
 
  // A $( document ).ready() block.
 $( document ).ready(function() {
@@ -30,6 +35,7 @@ $( document ).ready(function() {
 	 newminipollidincrementer=0;
 	
 	 function checkinputfield(inputfield){
+             
 		 console.log(inputfield.val());console.log(inputfield.attr('name'));console.log(inputfield.attr('data-tempid'));console.log('checkinputfield');
 		 if(inputfield.attr('name')=='minipollname'){
 			if(inputfield.val()!=''){ return true;}else{return false;}
@@ -58,14 +64,34 @@ $( document ).ready(function() {
 		}
 		
 	 }
+         
+         /**
+          * Funtion gives template html.
+          * 
+          * This function simply returns template html, 
+          * here the @resturns thingie was automatically added by NetBeans
+          * 
+          * @param {void} 
+          * @return {String} the template html with placeholders to be filled in
+          * 
+          * @returns {String|String.prototype.replaceObject.replaceString|returnhtml}
+          */
 	 function get_start_html(){
 		 
 		 returnhtml = minipollcreateminipoll_html_template;//from ../templates/minipollcreateminipolltemplate.inc.js
-		 
+                console.log('bahbah');
+
 		 return returnhtml;
 	 };
-	 function get_step1input_html(tempmipoid){
-		 minipollcreatedata[tempmipoid]={"tempmipoid":tempmipoid,"step1completed":"no"};
+         
+         /**
+          * 
+          * @
+          * @param {type} tempmipoid
+          * @returns {String|String.prototype.replaceObject.replaceString|returnhtml}
+          */
+         function get_step1input_html(tempmipoid){
+		 minipollcreatedata[tempmipoid]={"tempmipoid":tempmipoid,"step1completed":"no","step1reedit":"notactive"};
 		 createminipollstep1replacerobject={"{{{newmipoid}}}":tempmipoid,
 		                                     "{{{step1completed}}}":"no"
 
@@ -73,6 +99,7 @@ $( document ).ready(function() {
 		 returnhtml = minipollcreateminipollstep1input_html_template.replaceObject(createminipollstep1replacerobject);//from ../templates/minipollcreateminipolltemplate.inc.js
 		 return returnhtml;
 	 };
+         /* fill div with input-tags content */
 	 $('#wizcontent').html(get_start_html());
 	 
 	 /* click on button :: */
@@ -81,7 +108,7 @@ $( document ).ready(function() {
 		 /* get html from filledin template */
 		newminipoll_html = get_step1input_html(newminipollidincrementer);
 	 	
-		/** put htm of step 1 in place: only 1 input is vissible, displayed now */
+		/** put html of step 1 in place: only 1 input is vissible, displayed now */
 		$(this,'#dynacontentroot').append(newminipoll_html);
 		
 		/* fill up data object minipollcreatedata using newminipoll_html to find keys and set start value ("-") */
@@ -138,7 +165,8 @@ $( document ).ready(function() {
 				
 			});
 			console.log(checkarray);
-			if ($.inArray("wrong",checkarray) ==-1){
+			if (($.inArray("wrong",checkarray) ==-1)&&(minipollcreatedata[newminipollidincrementer]['step1reedit']!="active")){
+                        
 				alert('alles ok!!');
 				//http://stackoverflow.com/questions/16285791/how-do-you-replace-an-html-tag-with-another-tag-in-jquery
 				//$('aside').contents().unwrap().wrap('<div/>');
@@ -156,7 +184,36 @@ $( document ).ready(function() {
 					//create edit again button
 					
 				});
-			}
+                                $('.reedit_pollstep1').on('click', function(){
+                                    $(this).parent().append('<div class="readyedit_pollstep1">edit ready</div>');
+                                    $(this).fadeOut();
+                                    //$('.reedit_pollstep1').fadeIn();
+                                    $('.create_answers_button').fadeOut();
+                                    minipollcreatedata[newminipollidincrementer]['step1reedit']="active";
+                                    $( "input.minipollinput" ).each(function() {
+                                        console.log($(this).parent().html());
+                                        console.log($(this).attr('disabled'));
+                                        $(this).removeAttr('disabled');
+                                        $(this).attr('style','background:#fff');
+                                    })
+                                    $('.readyedit_pollstep1').on('click',function(){
+                                        $(this).fadeOut();
+                                       minipollcreatedata[newminipollidincrementer]['step1reedit']="notactive" ;
+                                       $('.reedit_pollstep1').fadeIn();
+                                       $('.create_answers_button').fadeIn();
+                                       $( "input.minipollinput" ).each(function( index ) {
+                                            console.log( index + ": " + $( this ).text() );
+                                            //console.log($(this).attr('title'));
+                                            $(this).attr('style','background:#999');
+                                            $(this).attr('disabled','disabled');
+                                            //create edit again button
+
+                                        });
+                                    });
+                                });
+			}else{
+                            ;
+                        }
 			
 		});
 		console.log(minipollcreatedata);
@@ -165,6 +222,13 @@ $( document ).ready(function() {
 	alert(get_start_html());
    //console.log( "ready!" );
    $.cookie.json = true;//Turn on automatic storage of JSON objects passed as the cookie value. Assumes JSON.stringify and JSON.parse:
+   
+   /**
+    * @description extension of String object (wrapper object) with method that fills in template strings directed by replacer object
+    * @fuction
+    * @param {object} findreplaceobject
+    * @returns {String}
+    */
    String.prototype.replaceObject = function(findreplaceobject) {
 		 var replaceString = this;
 		 //alert('eerste: ' + replaceString);
